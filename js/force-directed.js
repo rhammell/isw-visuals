@@ -1,5 +1,5 @@
 var width = 960;
-var height = 700;
+var height = 750;
 
 // Set size and viewport of chart
 var svg = d3.select("#chart")
@@ -54,8 +54,6 @@ d3.json("data/nodes.json", function(data) {
 
   // Create link elements
   var linkElements = svg.append('g')
-      .attr("stroke", "#999")
-      .attr("stroke-opacity", 0.6)
     .selectAll('line')
     .data(links)
     .enter().
@@ -87,35 +85,11 @@ d3.json("data/nodes.json", function(data) {
     .enter()
       .append('circle')
         .attr("r", 20)
-        .attr("stroke", "black")
-        .attr("stoke-width", "6px")
         .attr("fill", function(node){ return "url(#" + node.name.replaceAll(' ','_') + ")" })
         .call(dragDrop)
-        .on("mousemove", function(d) {     
-          var matrix = this.getScreenCTM()
-              .translate(+ this.getAttribute("cx"), + this.getAttribute("cy")); 
-
-          tooltip
-              .html(
-                 "<p><strong>" + d.name + "</strong></p>"
-              ) 
-              .style("left", (window.pageXOffset + matrix.e - $("#tooltip").outerWidth() / 2) + "px")
-              .style("top", (window.pageYOffset + matrix.f + 20 + 3) + "px")
-              .style("opacity", 1)
-              //.style("left", (window.pageXOffset + matrix.e + 18) + "px")
-              //.style("top", (window.pageYOffset + matrix.f - 32) + "px") 
-
-              d3.select(this)
-                .attr("stroke", "red")  
-          })  
-          .on("mouseout", function(d) {        
-            tooltip
-                .html("") 
-                .style("opacity", 0); 
-
-            d3.select(this)
-                .attr("stroke", "black")      
-           }) 
+        .on("mouseover", mouseover) 
+        .on("mousemove", mousemove)
+        .on("mouseout", mouseout) 
 
   // Add nodes & links to simulation
   simulation.nodes(nodes);
@@ -132,6 +106,38 @@ d3.json("data/nodes.json", function(data) {
      .attr('y1', function(link) { return link.source.y})
      .attr('x2', function(link) { return link.target.x})
      .attr('y2', function(link) { return link.target.y})
+  }
+
+  // Callback for mouse movement into circle
+  function mousemove(d) {     
+    var matrix = this.getScreenCTM()
+      .translate(+ this.getAttribute("cx"), + this.getAttribute("cy")); 
+
+    tooltip
+      .html(
+         "<p><strong>" + d.name + "</strong></p>"
+      ) 
+      .style("left", (window.pageXOffset + matrix.e - $("#tooltip").outerWidth() / 2) + "px")
+      .style("top", (window.pageYOffset + matrix.f + 20 + 3) + "px")
+      .style("opacity", 1)
+      //.style("left", (window.pageXOffset + matrix.e + 18) + "px")
+      //.style("top", (window.pageYOffset + matrix.f - 32) + "px") 
+   }
+
+  // Callback for mouse movment out of circle
+  function mouseout(d) {        
+    tooltip
+      .html("") 
+      .style("opacity", 0); 
+
+    d3.select(this)
+      .attr("class", "")   
+  }
+
+   // Callback for mouse movment out of circle
+  function mouseover(d) {        
+    d3.select(this)
+      .attr("class", "highlight")   
   }
 
 });
