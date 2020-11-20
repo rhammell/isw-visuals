@@ -1,3 +1,4 @@
+// SVG 
 var width = 960;
 var height = 750;
 
@@ -6,7 +7,6 @@ var svg = d3.select("#chart")
   .attr("width", width)
   .attr("height", height)
   .attr("viewBox", [-width/2, -height/2, width, height]);
-
 
 // Create a tooltip
 var tooltip = d3.select("body").append("div")    
@@ -130,14 +130,33 @@ d3.json("data/nodes.json", function(data) {
       .html("") 
       .style("opacity", 0); 
 
-    d3.select(this)
-      .attr("class", "")   
+    nodeElements
+      .classed("highlight", false); 
+    linkElements
+      .classed("highlight", false);
   }
 
    // Callback for mouse movment out of circle
   function mouseover(d) {        
+
+    var neighbors = []
+    links.forEach(function(link){
+      if (link.target.name == d.name) {neighbors.push(link.source.name)}
+      if (link.source.name == d.name) {neighbors.push(link.target.name)}
+    })
+
+    nodeElements
+      .classed("highlight", function(node) {
+          return (neighbors.indexOf(node.name) != -1)
+      })
+
+    linkElements
+      .classed("highlight", function(link){ 
+        return (link.target.name == d.name || link.source.name == d.name)
+      })
+
     d3.select(this)
-      .attr("class", "highlight")   
+      .classed("highlight", true); 
   }
 
 });

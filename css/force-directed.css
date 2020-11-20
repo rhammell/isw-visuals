@@ -40,11 +40,12 @@ line {
 }
 
 circle {
-  stroke: black;
-  stroke-width: 1px;
+  stroke: grey;
+  stroke-opacity: 0.6;
 }
 
 .highlight {
   stroke: red;
   stroke-width: 2px;
+  stroke-opacity: 0.6;
 }
