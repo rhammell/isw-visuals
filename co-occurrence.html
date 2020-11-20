@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>ISW Name Co-occurrence</title>
+  <link rel="stylesheet" href="css/co-occurrence.css">
+</head>
+
+<body>
+
+  <div id="content">
+
+    <div id="header">
+      <h1>ISW Network Name Co-occurrence</h1>
+      <small>
+        <p>This matrix diagram visualizes co-occurrences of names extracted from ISW publications. Each colored cell represents two people that appeared in the same article; darker cells indicate people that co-occurred more frequently.</p>
+        <p>Use the drop-down menu to reorder the matrix and click individual cells to explore the data.</p>
+      </small>
+    </div>
+
+    <div id="wrapper">
+      <div id="main">
+        <svg id="matrix"></svg>
+        <p><small>Data sourced from: <a href="https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment">ISW Web Scrape and Enrichment</a>.</small></p>
+      </div>
+      <div id="menu">
+        <p>
+          Order by: 
+          <select id="order">
+          <option value="name">Name</option>
+          <option value="count">Frequency</option>
+          </select>
+        </p>
+        <div id="display">
+          <p>Click a matrix cell to view details.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="js/co-occurrence.js"></script>
+
+</body>
+
