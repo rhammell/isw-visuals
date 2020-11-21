@@ -33,24 +33,25 @@ d3.json("data/nodes.json", function(data) {
     )
     .on('tick', tick)
 
-  // Creare drag and drop functionality
+  // Drage and drop functionality for nodes - pin on release
   var dragDrop = d3.drag()
     .on("start", function(node) {
       node.fx = node.x
       node.fy = node.y
+      d3.select(this).classed("fixed", true);
     })
     .on("drag", function(node) {
       simulation.alphaTarget(0.3).restart()
       node.fx = d3.event.x
       node.fy = d3.event.y
     })
-    .on("end", function(node) {
-      if (!d3.event.active) {
-        simulation.alphaTarget(0)
-      }
-      node.fx = null
-      node.fy = null
-    })
+
+  // Double click callback for nodes to un-pin
+  function dblclick(node) {
+    d3.select(this).classed("fixed", false);
+    node.fx = null
+    node.fy = null
+  }
 
   // Create link elements
   var linkElements = svg.append('g')
@@ -89,7 +90,8 @@ d3.json("data/nodes.json", function(data) {
         .call(dragDrop)
         .on("mouseover", mouseover) 
         .on("mousemove", mousemove)
-        .on("mouseout", mouseout) 
+        .on("mouseout", mouseout)
+        .on("dblclick", dblclick)
 
   // Add nodes & links to simulation
   simulation.nodes(nodes);
@@ -114,14 +116,10 @@ d3.json("data/nodes.json", function(data) {
       .translate(+ this.getAttribute("cx"), + this.getAttribute("cy")); 
 
     tooltip
-      .html(
-         "<p><strong>" + d.name + "</strong></p>"
-      ) 
+      .html("<p><strong>" + d.name + "</strong></p>") 
       .style("left", (window.pageXOffset + matrix.e - $("#tooltip").outerWidth() / 2) + "px")
       .style("top", (window.pageYOffset + matrix.f + 20 + 3) + "px")
       .style("opacity", 1)
-      //.style("left", (window.pageXOffset + matrix.e + 18) + "px")
-      //.style("top", (window.pageYOffset + matrix.f - 32) + "px") 
    }
 
   // Callback for mouse movment out of circle
