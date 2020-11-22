@@ -80,12 +80,13 @@ d3.json("data/nodes.json", function(data) {
           .attr("transform", "translate(-10,-5)")
 
   // Create node elements
+  var radius = 20;
   var nodeElements = svg.append('g')
     .selectAll('circle')
     .data(nodes)
     .enter()
       .append('circle')
-        .attr("r", 20)
+        .attr("r", radius)
         .attr("fill", function(node){ return "url(#" + node.name.replaceAll(' ','_') + ")" })
         .call(dragDrop)
         .on("mouseover", mouseover) 
@@ -100,8 +101,8 @@ d3.json("data/nodes.json", function(data) {
   // Simulation tick callback to update node/line element positions
   function tick() {
     nodeElements
-      .attr("cx", function(node) {return node.x})
-      .attr("cy", function(node) {return node.y})
+      .attr("cx", function(node) {return node.x = Math.max(radius - width/2, Math.min(width/2 - radius, node.x)) ;})
+      .attr("cy", function(node) {return node.y = Math.max(radius - height/2, Math.min(height/2 - radius, node.y)) ;})
 
     linkElements
      .attr('x1', function(link) { return link.source.x})
