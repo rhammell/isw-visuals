@@ -1,0 +1,84 @@
+body {
+  background: #fcfcfa;
+  color: #333;
+  font-family: sans-serif;
+}
+
+#content {
+  width: 960px;
+  margin: 2em auto 4em auto;
+}
+
+#header {
+  margin-bottom: 25px;
+}
+
+#wrapper {
+  margin-bottom: 50px;
+}
+
+#footer {
+  font-size: 12px;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: -2px;
+  margin: .3em 0 .1em 0;
+}
+
+.country {
+  stroke: black;
+  stroke-width: 0.3;
+}
+
+.highlight {
+  stroke: orange;
+  stroke-width: 3;
+  
+}
+
+.outline {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.gridline {
+  fill: none;
+  stroke: #f1f1f1;
+}
+
+#tooltip { 
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  position: absolute;               
+  pointer-events: none;   
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 2px 5px;
+}
+
+#tooltip .label { 
+  color: orange;
+  font-weight: bold;
+}
+
+#tooltip p {
+  padding: 0px;
+  margin: 0px;
+}
+
+.result {
+  font-size: 14px;
+}
+
+.result p {
+  margin: 0px;
+  margin-bottom: 8px;
+}
+
+.result hr {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}

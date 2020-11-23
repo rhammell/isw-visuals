@@ -9,7 +9,7 @@ var x = d3.scaleBand().range([0, width]),
     c = d3.scaleOrdinal(d3.schemeCategory10).domain(d3.range(10));
 
 // Initiate svg
-var svg = d3.select("#matrix")
+var svg = d3.select("#chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-left", -margin.left + "px")

@@ -1,4 +1,5 @@
-# Script to format ISW product data into node and link data
+# Format ISW product data into new datasets that are utilized
+# by the various visualizations
 
 import json
 import requests
@@ -84,3 +85,5 @@ output = {
 # Save json formatted data
 with open('nodes.json', 'w') as f:
     json.dump(output, f, indent=4)
+
+

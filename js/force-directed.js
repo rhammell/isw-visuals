@@ -1,8 +1,8 @@
-// SVG 
+// SVG size
 var width = 960;
 var height = 750;
 
-// Set size and viewport of chart
+// Initiate SVG
 var svg = d3.select("#chart")
   .attr("width", width)
   .attr("height", height)
@@ -28,7 +28,7 @@ d3.json("data/nodes.json", function(data) {
     .force("y", d3.forceY())
     .force("collide", d3.forceCollide(25).iterations(10))
     .force('link', d3.forceLink()
-      .id(function(link) {return link.index})
+      .id(link => link.index)
       .distance(50)
     )
     .on('tick', tick)
@@ -66,13 +66,13 @@ d3.json("data/nodes.json", function(data) {
     .data(nodes)
     .enter()
       .append('pattern')
-        .attr("id", function(node){ return node.name.replaceAll(' ','_') })
+        .attr("id", node => node.name.replaceAll(' ','_') )
         .attr("x", 0)
         .attr("y", 0)
         .attr("width", 1)
         .attr("height", 1)
         .append('image')
-          .attr("xlink:href", function(node){ return node.img })
+          .attr("xlink:href", node => node.img)
           .attr("x", 0)
           .attr("y", 0)
           .attr("height", 60)
@@ -87,7 +87,7 @@ d3.json("data/nodes.json", function(data) {
     .enter()
       .append('circle')
         .attr("r", radius)
-        .attr("fill", function(node){ return "url(#" + node.name.replaceAll(' ','_') + ")" })
+        .attr("fill", node => "url(#" + node.name.replaceAll(' ','_') + ")" )
         .call(dragDrop)
         .on("mouseover", mouseover) 
         .on("mousemove", mousemove)
@@ -135,7 +135,7 @@ d3.json("data/nodes.json", function(data) {
       .classed("highlight", false);
   }
 
-   // Callback for mouse movment out of circle
+  // Callback for mouse movment out of circle
   function mouseover(d) {        
 
     var neighbors = []
