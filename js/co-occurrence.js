@@ -87,14 +87,14 @@ d3.json("data/nodes.json", function(data) {
       .text(function(d, i) { return nodes[i].name; });
 
   // Create rows
-  var row = svg.selectAll(".row")
+  var rows = svg.selectAll(".row")
       .data(matrix)
     .enter().append("g")
       .attr("class", "row")
       .attr("transform", function(d, i) { return "translate(0," + (x(i) + 0.5) + ")"; })
     .each(row)
 
-  row.append("text")
+  rows.append("text")
       .attr("x", -6)
       .attr("y", x.bandwidth() / 2)
       .attr("dy", ".32em")
@@ -103,7 +103,7 @@ d3.json("data/nodes.json", function(data) {
 
   // Create rect elements for matrix
   function row(row) {
-    var cell = d3.select(this).selectAll(".cell")
+    d3.select(this).selectAll(".cell")
         .data(row.filter(function(d) { return d.z; }))
       .enter().append("rect")
         .attr("class", "cell")

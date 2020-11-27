@@ -3,6 +3,7 @@
 
 import json
 import requests
+import dateutil.parser
 
 # Open ISW product data
 fname = "isw_products.json"
@@ -43,7 +44,7 @@ for node in nodes:
     except: 
         node["img"] = "https://upload.wikimedia.org/wikipedia/commons/7/7e/Replace_this_image_male.svg"
 
-# Output links
+# Output network links
 links = []
 
 # Determine links between nodes
@@ -75,7 +76,6 @@ for i, source_node in enumerate(nodes[:-1]):
                 "products": linked_products
             })  
 
-
 # Set output format
 output = {
     "nodes": nodes,
@@ -85,5 +85,50 @@ output = {
 # Save json formatted data
 with open('nodes.json', 'w') as f:
     json.dump(output, f, indent=4)
+
+
+# Loop through each node
+for node in nodes: 
+
+    # Init timeline data for each node
+    node['timeline'] = {}
+    node['count'] = 0
+
+    # Loop through each product 
+    for product in products:
+
+        # Check if node name is included in product's pepole 
+        if node["name"] in product["people"]:
+
+            # Process if valid date
+            if product["date"]:
+
+                # Convert to month date string
+                date = dateutil.parser.parse(product["date"]).strftime('%Y-%m')
+
+                # Product entry details
+                details = {"title": product["title"],
+                           "url": product["url"],
+                           "date": product["date"]}
+
+                # Add to timeline data
+                node["timeline"][date] = node["timeline"].get(date, []) + [details]
+                node['count'] += 1
+
+# Save json formatted data
+with open('timeline.json', 'w') as f:
+    json.dump(nodes, f, indent=4)
+
+
+
+
+
+
+
+    
+
+
+
+
 
 
