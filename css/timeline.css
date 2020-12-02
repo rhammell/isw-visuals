@@ -73,5 +73,14 @@ h1 {
 
 rect.active {
   stroke-width: 2;
-  stroke: rgb(0,0,0);
+  stroke: #ff8400;
+}
+
+.background {
+  fill: #eee;
+}
+
+.gridline {
+  stroke: #fff;
+  stroke-width: 1px;
 }

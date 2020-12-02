@@ -108,8 +108,7 @@ for node in nodes:
 
                 # Product entry details
                 details = {"title": product["title"],
-                           "url": product["url"],
-                           "date": product["date"]}
+                           "url": product["url"]}
 
                 # Add to timeline data
                 node["timeline"][date] = node["timeline"].get(date, []) + [details]

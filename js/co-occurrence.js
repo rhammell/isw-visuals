@@ -17,7 +17,10 @@ var svg = d3.select("#chart")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Background rectangle
-svg.append("rect")
+var grid = svg.append("g")
+   .attr("id", "background")
+
+grid.append("rect")
   .attr("class", "background")
   .attr("width", width)
   .attr("height", height);
@@ -57,20 +60,22 @@ d3.json("data/nodes.json", function(data) {
   // The default sort order.
   x.domain(orders.name);
 
-  // Create grid lines
-  var enterLines = svg.selectAll(".lines")
-      .data(matrix)
-      .enter()
+  // Grid lines
+  d3.range(n+1).forEach(function(i){
+    var loc = (x.bandwidth() * i) - 0.5;
+    
+    grid.append("line")
+      .attr("x1", 0)
+      .attr("x2", width)
+      .attr("y1", loc)
+      .attr("y2", loc)
 
-  enterLines.append("g")
-                .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; })
-            .append("line")
-              .attr("x1", -width);
-
-  enterLines.append("g")
-              .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
-            .append("line")
-              .attr("x2", width);
+    grid.append("line")
+      .attr("x1", loc)
+      .attr("x2", loc)
+      .attr("y1", 0)
+      .attr("y2", height)
+  })
 
   // Create columns
   var column = svg.selectAll(".column")
@@ -79,6 +84,7 @@ d3.json("data/nodes.json", function(data) {
       .attr("class", "column")
       .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
 
+  // Column text labels
   column.append("text")
       .attr("x", 6)
       .attr("y", x.bandwidth() / 2)
@@ -91,9 +97,10 @@ d3.json("data/nodes.json", function(data) {
       .data(matrix)
     .enter().append("g")
       .attr("class", "row")
-      .attr("transform", function(d, i) { return "translate(0," + (x(i) + 0.5) + ")"; })
+      .attr("transform", function(d, i) { return "translate(0," + (x(i)) + ")"; })
     .each(row)
 
+  // Row text labels
   rows.append("text")
       .attr("x", -6)
       .attr("y", x.bandwidth() / 2)
@@ -107,9 +114,9 @@ d3.json("data/nodes.json", function(data) {
         .data(row.filter(function(d) { return d.z; }))
       .enter().append("rect")
         .attr("class", "cell")
-        .attr("x", function(d) { return x(d.x) + 0.5; })
-        .attr("width", x.bandwidth()-1.0)
-        .attr("height", x.bandwidth()-1.0)
+        .attr("x", function(d) { return x(d.x); })
+        .attr("width", x.bandwidth()-1)
+        .attr("height", x.bandwidth()-1)
         .style("fill-opacity", function(d) { return z(d.z); })
         .style("fill", "orange")
         .on("click", click);

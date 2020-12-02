@@ -87,6 +87,7 @@ svg {
 
 line {
   stroke: #fff;
+  stroke-width: 1px;
 }
 
 text.active {
