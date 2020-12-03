@@ -80,7 +80,12 @@ rect.active {
   fill: #eee;
 }
 
-.gridline {
+.grid-line {
   stroke: #fff;
+  stroke-width: 1px;
+}
+
+.axis-line {
+  stroke: black;
   stroke-width: 1px;
 }

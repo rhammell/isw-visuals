@@ -9,6 +9,7 @@ var svg = d3.select("#chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .style("margin-left", -margin.left + "px")
+    .style("margin-top", "10px")
   
 var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -17,7 +18,7 @@ var g = svg.append("g")
 d3.json("data/timeline.json", function(data) {
 
   // Calc new height
-  height = data.length * rowHeight;
+  height = (data.length * rowHeight) + 1;
 
   // Resize svg
   svg.attr("height", height);
@@ -39,10 +40,10 @@ d3.json("data/timeline.json", function(data) {
   // Vertical scale
   var y = d3.scaleBand()
             .domain(orders.count)
-            .range([0, data.length * rowHeight])
+            .range([rowHeight, height])
 
   // Horizontal scale
-  var startDate = parseDate("2012-01");
+  var startDate = parseDate("2015-01");
   var endDate = parseDate("2021-01");
   var months = d3.timeMonths(startDate, endDate);
   var years = d3.timeYears(startDate, endDate);
@@ -52,6 +53,7 @@ d3.json("data/timeline.json", function(data) {
 
   // Background rectangle
   var background = g.append("g")
+    .attr("transform", "translate(" + 0 + "," + rowHeight + ")")
     .attr("id", "background")
   background.append("rect")
     .attr("class", "background")
@@ -63,7 +65,7 @@ d3.json("data/timeline.json", function(data) {
     var xloc = x(month)-0.5;
     
     background.append("line")
-      .attr("class","gridline")
+      .attr("class","grid-line")
       .attr("x1", xloc )
       .attr("x2", xloc )
       .attr("y1", 0)
@@ -75,12 +77,38 @@ d3.json("data/timeline.json", function(data) {
     var yloc = (y.bandwidth() * i)-0.5;
     
     background.append("line")
-      .attr("class","gridline")
+      .attr("class","grid-line")
       .attr("x1", 0)
       .attr("x2", width)
       .attr("y1", yloc)
       .attr("y2", yloc)
   })
+
+  // X Axis time scale 
+  xAxisScale = d3.scaleTime()
+                 .domain([startDate, endDate])
+                 .range([0, width])
+  
+  // Create axis
+  var xAxis = g.append("g")
+    .attr("id", "xaxis")
+  
+  years.forEach(function(year){
+    var xloc = xAxisScale(year);
+    xAxis.append("line")
+      .attr("class", "axis-line")
+      .attr("x1", xloc)
+      .attr("x2", xloc)
+      .attr("y1", rowHeight - 14)
+      .attr("y2", rowHeight)
+
+    xAxis.append("text")
+      .attr("class", "axis-text")
+      .attr("x", xloc + 3)
+      .attr("y", rowHeight - 3)  
+      .attr("font-size", 11)
+      .text(year.getFullYear());
+  })  
 
   // Create rows
   var rows = g.selectAll(".row")
