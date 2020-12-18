@@ -3,7 +3,8 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Force Directed Graph</title>
+  <title>ISW Force Directed Graph</title>
+  <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/force-directed.css">
 </head>
 
@@ -13,15 +14,15 @@
 
     <div id="header">
       <h1>ISW Force Diagram</h1>
-      <small>
-        <p>This chart visualizes the network of connections between names extracted from ISW publications. Each node represents a name and link connections represent appearing in the same article.</p>
-        <p>Mouse over a node to higlight its connections. Click and drag to pin the node to a new position. Double click to un-pin.</p>
-      </small>
+      <p>This chart visualizes the network of connections between names extracted from ISW publications. Each node represents a name and link connections represent appearing in the same article.</p>
+      <p>Mouse over a node to higlight its connections. Click and drag to pin the node to a new position. Double click to un-pin.</p>
     </div>
 
     <div id="wrapper">
       <svg id="chart"></svg>
-      <p><small>Data sourced from: <a href="https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment">ISW Web Scrape and Enrichment</a>.</small></p>
+      <div id="footer">
+        <p>Data sourced from: <a href="https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment">ISW Web Scrape and Enrichment</a></p>
+      </div>
     </div>
 
   </div>

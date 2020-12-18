@@ -1,31 +1,5 @@
-body {
-  background: #fcfcfa;
-  color: #333;
-  font-family: sans-serif;
-}
-
-#content {
-  width: 960px;
-  margin: 2em auto 4em auto;
-}
-
 #header {
   margin-bottom: 25px;
-}
-
-#wrapper {
-  margin-bottom: 50px;
-}
-
-#footer {
-  font-size: 12px;
-}
-
-h1 {
-  font-size: 55px;
-  font-weight: 300;
-  letter-spacing: -2px;
-  margin: .3em 0 .1em 0;
 }
 
 .country {
@@ -36,7 +10,6 @@ h1 {
 .highlight {
   stroke: orange;
   stroke-width: 3;
-  
 }
 
 .outline {
@@ -51,7 +24,6 @@ h1 {
 }
 
 #tooltip { 
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   position: absolute;               
   pointer-events: none;   
   background: rgba(0, 0, 0, 0.6);
@@ -69,11 +41,8 @@ h1 {
   margin: 0px;
 }
 
-.result {
-  font-size: 14px;
-}
-
 .result p {
+  font-size: 14px;
   margin: 0px;
   margin-bottom: 8px;
 }

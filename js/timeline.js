@@ -25,8 +25,8 @@ d3.json("data/timeline.json", function(data) {
 
   // Precompute sort orders
   var orders = {
-    name: d3.range(data.length).sort(function(a, b) { return d3.ascending(data[a].name, data[b].name); }),
-    count: d3.range(data.length).sort(function(a, b) { return d3.descending(data[a].count, data[b].count); })
+    name: d3.range(data.length).sort((a, b) => d3.ascending(data[a].name, data[b].name)),
+    count: d3.range(data.length).sort((a, b) => d3.descending(data[a].count, data[b].count))
   };
 
   // Date parsing function
@@ -106,7 +106,6 @@ d3.json("data/timeline.json", function(data) {
       .attr("class", "axis-text")
       .attr("x", xloc + 3)
       .attr("y", rowHeight - 3)  
-      .attr("font-size", 11)
       .text(year.getFullYear());
   })  
 
@@ -115,30 +114,28 @@ d3.json("data/timeline.json", function(data) {
       .data(data)
     .enter().append("g")
       .attr("class", "row")
-      .attr("transform", function(d, i) { return "translate(0," + y(i) + ")"; })
+      .attr("transform", (d, i) => "translate(0," + y(i) + ")")
     .each(buildCells)
     
   // Text labels
   rows.append("text")
+    .attr("class", "axis-text")
     .attr("x", -5)
     .attr("y", rowHeight - 4)  
-    .attr("font-size", 11)
     .attr("text-anchor", "end")
-    .text(function(d, i) { return d.name; });
+    .text((d, i) => d.name);
 
   // Create cells
   function buildCells(row) {
 
      d3.select(this).selectAll(".cell")
-        .data(d3.keys(row.timeline).filter(function(d){
-          return parseDate(d) >= startDate;
-        }))
+        .data(d3.keys(row.timeline).filter(d => parseDate(d) >= startDate))
       .enter().append("rect")
         .attr("class", "cell")
-        .attr("x", function(d) { return x(parseDate(d)) })
+        .attr("x", d => x(parseDate(d)))
         .attr("width", x.bandwidth()-1 )
         .attr("height", y.bandwidth()-1)
-        .style("fill", function(d) { return color(row.timeline[d].length) })
+        .style("fill", d => color(row.timeline[d].length))
         .on('click', click)
   }
 
@@ -166,8 +163,6 @@ d3.json("data/timeline.json", function(data) {
     })
     html += '</ul>'
 
-
-
     $("#display").html(html)
   }
 
@@ -181,8 +176,8 @@ d3.json("data/timeline.json", function(data) {
     // Update row positions
     var t = svg.transition().duration(2500);
     t.selectAll(".row")
-        .delay(function(d, i) { return y(i) * 2; })  
-        .attr("transform", function(d, i) { return "translate(0," + y(i) + ")"; })
+        .delay((d, i) => y(i) * 2)  
+        .attr("transform", (d, i) => "translate(0," + y(i) + ")")
   });
 
     

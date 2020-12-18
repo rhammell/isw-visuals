@@ -1,23 +1,4 @@
-body {
-  background: #fcfcfa;
-  color: #333;
-  font-family: sans-serif;
-}
-
-#content {
-  width: 960px;
-  margin: 2em auto 4em auto;
-}
-
-h1 {
-  font-size: 55px;
-  font-weight: 300;
-  letter-spacing: -2px;
-  margin: .3em 0 .1em 0;
-}
-
 #tooltip { 
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     position: absolute;              
     padding: 2px 3px;    
     font: 10px sans-serif;    

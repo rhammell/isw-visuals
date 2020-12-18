@@ -14,8 +14,6 @@ var svg = d3.select("#chart")
 
 // Define natural earth projection
 var projection = d3.geoNaturalEarth()
-    //.scale(width / 2 / Math.PI)
-    //.translate([width / 2, height / 2])
 
 // Define path
 var path = d3.geoPath().projection(projection);

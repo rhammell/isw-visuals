@@ -1,5 +1,5 @@
 // Matrix chart size params
-var margin = {top: 140, right: 0, bottom: 10, left: 140};
+var margin = {top: 140, right: 0, bottom: 0, left: 140};
 var width = 720;
 var height = 720;
 
@@ -38,7 +38,7 @@ d3.json("data/nodes.json", function(data) {
   // Compute index per node.
   nodes.forEach(function(node, i) {
     node.count = 0;
-    matrix[i] = d3.range(n).map(function(j){ return {x: j, y: i, z: 0, products: []}; });
+    matrix[i] = d3.range(n).map(j => ({"x": j, y: i, z: 0, products: []}) );
   });
 
   // Convert links to matrix; count character occurrences.
@@ -53,8 +53,8 @@ d3.json("data/nodes.json", function(data) {
 
   // Precompute the orders.
   var orders = {
-    name: d3.range(n).sort(function(a, b) { return d3.ascending(nodes[a].name, nodes[b].name); }),
-    count: d3.range(n).sort(function(a, b) { return nodes[b].count - nodes[a].count; }),
+    name: d3.range(n).sort((a, b) => d3.ascending(nodes[a].name, nodes[b].name)),
+    count: d3.range(n).sort((a, b) => nodes[b].count - nodes[a].count),
   };
 
   // The default sort order.
@@ -65,12 +65,14 @@ d3.json("data/nodes.json", function(data) {
     var loc = (x.bandwidth() * i) - 0.5;
     
     grid.append("line")
+      .attr("class","grid-line")
       .attr("x1", 0)
       .attr("x2", width)
       .attr("y1", loc)
       .attr("y2", loc)
 
     grid.append("line")
+      .attr("class","grid-line")
       .attr("x1", loc)
       .attr("x2", loc)
       .attr("y1", 0)
@@ -82,49 +84,49 @@ d3.json("data/nodes.json", function(data) {
       .data(matrix)
     .enter().append("g")
       .attr("class", "column")
-      .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
+      .attr("transform", (d,i) => "translate(" + x(i) + ")rotate(-90)" );
 
   // Column text labels
   column.append("text")
+      .attr("class", "axis-text")
       .attr("x", 6)
       .attr("y", x.bandwidth() / 2)
-      .attr("dy", ".32em")
       .attr("text-anchor", "start")
-      .text(function(d, i) { return nodes[i].name; });
+      .text((d, i) => nodes[i].name);
 
   // Create rows
   var rows = svg.selectAll(".row")
       .data(matrix)
     .enter().append("g")
       .attr("class", "row")
-      .attr("transform", function(d, i) { return "translate(0," + (x(i)) + ")"; })
+      .attr("transform", (d, i) => "translate(0," + (x(i)) + ")")
     .each(row)
 
   // Row text labels
   rows.append("text")
+      .attr("class", "axis-text")
       .attr("x", -6)
       .attr("y", x.bandwidth() / 2)
-      .attr("dy", ".32em")
       .attr("text-anchor", "end")
-      .text(function(d, i) { return nodes[i].name; });
+      .text((d, i) => nodes[i].name);
 
   // Create rect elements for matrix
   function row(row) {
     d3.select(this).selectAll(".cell")
-        .data(row.filter(function(d) { return d.z; }))
+        .data(row.filter(d => d.z))
       .enter().append("rect")
         .attr("class", "cell")
-        .attr("x", function(d) { return x(d.x); })
+        .attr("x", d => x(d.x))
         .attr("width", x.bandwidth()-1)
         .attr("height", x.bandwidth()-1)
-        .style("fill-opacity", function(d) { return z(d.z); })
+        .style("fill-opacity", d => z(d.z))
         .style("fill", "orange")
         .on("click", click);
   }
 
   // Click callback to display co-occurrence details
   function click(p, e){
-    $("rect").toggleClass("active", false)
+    $(".cell").toggleClass("active", false)
     $(this).toggleClass("active", true)
 
     var source_node = nodes[p.y];
@@ -161,17 +163,18 @@ d3.json("data/nodes.json", function(data) {
     x.domain(orders[value]);
 
     var t = svg.transition().duration(2500);
+    var delay = 4;
 
     t.selectAll(".row")
-        .delay(function(d, i) { return x(i) * 4; })
-        .attr("transform", function(d, i) { return "translate(0," + x(i) + ")"; })
+        .delay((d, i) => x(i) * delay)
+        .attr("transform", (d, i) => "translate(0," + x(i) + ")")
       .selectAll(".cell")
-        .delay(function(d) { return x(d.x) * 4; })
-        .attr("x", function(d) { return x(d.x); });
+        .delay(d => x(d.x) * delay)
+        .attr("x", d => x(d.x));
 
     t.selectAll(".column")
-        .delay(function(d, i) { return x(i) * 4; })
-        .attr("transform", function(d, i) { return "translate(" + x(i) + ")rotate(-90)"; });
+        .delay((d, i) => x(i) * delay)
+        .attr("transform", (d, i) => "translate(" + x(i) + ")rotate(-90)");
   }
 
 });

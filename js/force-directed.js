@@ -1,12 +1,15 @@
 // SVG size
+var margin = {top: 20, right: 0, bottom: 0, left: 0};
 var width = 960;
-var height = 750;
+var height = 600;
 
 // Initiate SVG
 var svg = d3.select("#chart")
-  .attr("width", width)
-  .attr("height", height)
-  .attr("viewBox", [-width/2, -height/2, width, height]);
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
+  .attr("viewBox", [-width/2, -height/2, width, height])
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Create a tooltip
 var tooltip = d3.select("body").append("div")    
@@ -80,7 +83,7 @@ d3.json("data/nodes.json", function(data) {
           .attr("transform", "translate(-10,-5)")
 
   // Create node elements
-  var radius = 20;
+  var radius = 18;
   var nodeElements = svg.append('g')
     .selectAll('circle')
     .data(nodes)
@@ -101,14 +104,14 @@ d3.json("data/nodes.json", function(data) {
   // Simulation tick callback to update node/line element positions
   function tick() {
     nodeElements
-      .attr("cx", function(node) {return node.x = Math.max(radius - width/2, Math.min(width/2 - radius, node.x)) ;})
-      .attr("cy", function(node) {return node.y = Math.max(radius - height/2, Math.min(height/2 - radius, node.y)) ;})
+      .attr("cx", node => node.x = Math.max(radius - width/2, Math.min(width/2 - radius, node.x)) )
+      .attr("cy", node => node.y = Math.max(radius - height/2, Math.min(height/2 - radius, node.y)) )
 
     linkElements
-     .attr('x1', function(link) { return link.source.x})
-     .attr('y1', function(link) { return link.source.y})
-     .attr('x2', function(link) { return link.target.x})
-     .attr('y2', function(link) { return link.target.y})
+     .attr('x1', link => link.source.x)
+     .attr('y1', link => link.source.y)
+     .attr('x2', link => link.target.x)
+     .attr('y2', link => link.target.y)
   }
 
   // Callback for mouse movement into circle
@@ -119,7 +122,7 @@ d3.json("data/nodes.json", function(data) {
     tooltip
       .html("<p><strong>" + d.name + "</strong></p>") 
       .style("left", (window.pageXOffset + matrix.e - $("#tooltip").outerWidth() / 2) + "px")
-      .style("top", (window.pageYOffset + matrix.f + 20 + 3) + "px")
+      .style("top", (window.pageYOffset + matrix.f + radius + 3) + "px")
       .style("opacity", 1)
    }
 
@@ -145,14 +148,10 @@ d3.json("data/nodes.json", function(data) {
     })
 
     nodeElements
-      .classed("highlight", function(node) {
-          return (neighbors.indexOf(node.name) != -1)
-      })
+      .classed("highlight", node => (neighbors.indexOf(node.name) != -1) )
 
     linkElements
-      .classed("highlight", function(link){ 
-        return (link.target.name == d.name || link.source.name == d.name)
-      })
+      .classed("highlight", link => (link.target.name == d.name || link.source.name == d.name) )
 
     d3.select(this)
       .classed("highlight", true); 
