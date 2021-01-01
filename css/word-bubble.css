@@ -1,0 +1,38 @@
+#header {
+  margin-bottom: 25px;
+}
+
+.node text {
+  pointer-events: none;
+  margin: 0px;
+  padding: 0px;
+  text-anchor: middle;
+}
+
+.node circle {
+  fill: #c5d7ea;
+}
+
+.hover circle {
+  fill: #acbed1;
+}
+
+.selected circle {
+  fill: #99c0e5;
+  stroke: #6081a3;
+  stroke-width: 2px;
+}
+
+#input {
+  width: 100%;
+  text-align: center;
+}
+
+#wordInput {
+  width: 250px;
+}
+
+.subgroup {
+  outline: solid 0px blue;
+}
+

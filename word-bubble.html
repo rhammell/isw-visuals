@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>ISW Word Bubble</title>
+  <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/word-bubble.css">
 </head>
 
@@ -13,20 +14,29 @@
 
     <div id="header">
       <h1>ISW Word Bubble</h1>
-      <small>
-        <p>This chart shows word frequenies.</p>
-      </small>
+      <p>This chart visualizes the frequency of individual words extracted from ISW publications. Each word and its total count is displayed as a circular node, with its radius also represented by the count.</p>
+      <p>Click each node to explore its related publication data. Click and drag nodes to reorder them. Add new nodes using the text input.</p>
     </div>
 
     <div id="wrapper">
+
+      <div id="input">
+        <input type="text" id="wordInput" placeholder="Add word">
+        <button id="wordButton">Search</button>
+      </div>
+
       <svg id="chart"></svg>
-      <p><small>Data sourced from: <a href="https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment">ISW Web Scrape and Enrichment</a>.</small></p>
+      <div id="footer">
+        <p>Data sourced from: <a href="https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment">ISW Web Scrape and Enrichment</a></p>
+      </div>
     </div>
 
   </div>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/queue.v1.min.js"></script>
+  <script src="https://unpkg.com/lunr/lunr.js"></script>
   <script src="js/word-bubble.js"></script>
 
 </body>
