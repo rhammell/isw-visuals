@@ -2,12 +2,22 @@
   margin-bottom: 25px;
 }
 
-.node text {
+#chart {
+
+}
+
+text {
   pointer-events: none;
   margin: 0px;
   padding: 0px;
   text-anchor: middle;
 }
+
+.loading-text {
+  font-size: 16px;
+}
+
+
 
 .node circle {
   fill: #c5d7ea;
@@ -32,7 +42,36 @@
   width: 250px;
 }
 
-.subgroup {
-  outline: solid 0px blue;
+#results-header {
+  text-align: center;
 }
+
+.result {
+  width: 460px;
+}
+
+.result p {
+  font-size: 14px;
+  margin: 0px;
+  margin-bottom: 8px;
+}
+
+.result hr {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.header-highlight {
+  padding: 2px 6px;
+  background-color: #99c0e5;
+  border-radius: 5px;
+}
+
+.quote-highlight {
+  padding: 2px 3px;
+  background-color: #c5d7ea;
+  border-radius: 5px;
+}
+
+
 

@@ -124,11 +124,12 @@ function ready(error, countries, products) {
     filteredProducts.forEach(function(product){
       $("#results").append("<div class='result'>" + 
                            "<p><a href='" + product.url + "' target='_blank'>" + product.title + '</a></p>' + 
-                           '<p><strong>Publication Date</strong>: ' + product.date + '</p>' +
+                           '<p><strong>Publication Date</strong>: ' + product.date.split('T')[0] + '</p>' +
                            '<p><strong>Countries Mentioned</strong>: ' + product.countries['all mentioned countries'].join(', ') + '</p>' +
                            '<p><strong>People:</strong> ' + product.people.join(', ') + '</p>' +
                            '<p><strong>Keywords:</strong> ' + product.keywords.join(', ') + '</p>' +
-                           '<hr>' )
+                           '<hr>' + 
+                           '</div>')
     })
   }
 }

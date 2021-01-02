@@ -2,9 +2,67 @@ function cleanText(s) {
   return s.trim().toLowerCase();
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+
+function countMentions(results, word) {
+    var count = 0;
+    results.forEach(function(result){
+      n = result.matchData.metadata[word][searchField].position.length;
+      count += n;
+    })
+
+    return count;
+}
+
+function buildIndex(docs) {
+  var idx = lunr(function () {
+    this.ref(searchId)
+    this.field(searchField)
+    this.metadataWhitelist = ['position']
+
+    this.pipeline.remove(lunr.stemmer)
+    this.pipeline.remove(lunr.stopWordFilter)
+    this.searchPipeline.remove(lunr.stemmer)
+    this.searchPipeline.remove(lunr.stopWordFilter)
+
+    docs.forEach(function (doc) {
+      this.add(doc)
+    }, this)
+  })
+
+  return idx
+}
+
+function generateKeywords(products, idx) {
+
+  // Get list of all unique keywords
+  var allKeywords = products.map(function(a) {return a.keywords;}).flat();
+  var keywords = Array.from(new Set(allKeywords));
+
+  // Get mention counts for all keywords
+  var counts = keywords.map(function(word){
+    var results = idx.search(word);
+    var count = countMentions(results, word);
+
+    return {'word': word, 'count': count};
+  })
+
+  // Order list of keywords by count
+  counts.sort((a, b) => (a.count < b.count) ? 1 : -1)
+  keywords = counts.map(d => d.word);
+
+  return keywords
+}
+
+// Define field names specific to ISW dataset used for lunr index
+var searchId = '_id';
+var searchField = 'full text';
 
 // SVG size
 var margin = {top: 0, right: 0, bottom: 0, left: 0};
@@ -19,31 +77,37 @@ var svg = d3.select("#chart")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-// Load country and population data
-queue()
-    .defer(d3.json, "data/words.json")
-    .defer(d3.json, "data/isw_products.json")
-    .await(ready);
+  // Create loading display
+  console.log("adding loading text")
+  var loadingText = svg.append("text")
+    .attr("class", "loading-text")
+    .text("Loading...")
 
-// Load data callback 
-function ready(error, words, products) {
+// Load JSON data
+d3.json("data/isw_products.json", function(products) {
 
-  // Get words and vocab
-  var vocab = words.words;
-  var keywords = words.keywords;
+  // Create lunr index for word searching 
+  console.log("creating index...")
+  var idx = buildIndex(products);
+  console.log("finished.")
+
+  // Get initial list of keywords to visualize
+  var keywords = generateKeywords(products, idx); 
+
+  // Close loading display
+  loadingText.remove();
 
   // Init nodes
   var nodes = [];
 
   // Scale function for radius
   r_scale = d3.scaleSqrt()
-              .domain(d3.extent(Object.values(vocab)))
+              .domain([0,50000])
               .range([3,150])
               .exponent(0.5)
 
   // Initiate d3 force simulation
   var simulation = d3.forceSimulation()
-    //.force("charge", d3.forceManyBody().strength(-20)) 
     .force("x", d3.forceX(0).strength(0.1))
     .force("y", d3.forceY(0).strength(0.6))
     .force("collide", d3.forceCollide()
@@ -86,30 +150,31 @@ function ready(error, words, products) {
     nodeWords = nodes.map(node => node.word)
     if (!nodeWords.includes(word)) {
 
-      // Get word count from vocab
-      var count = 0
-      if (word in vocab) {
-        count = vocab[word]
-      }
+      // Search index for word
+      var results = idx.search(word);
+      var count = countMentions(results, word)
 
       // Update list of nodes
       nodes.push({
         "word": word,
-        "count": count
+        "count": count,
+        "results": results
       });
 
       update();
     }
   }
 
-    // Select node
+  // Select node
   function selectNode(word) {
-
     nodeGroup.selectAll(".node")
-      .classed("selected", function(d) { return d.word === word; }); 
+      .classed("selected", false)
 
-    //d3.timeout(function(){processWord(word)}, 50);
+    var selectedNode = nodeGroup.selectAll(".node")
+                         .filter(function(d) { return d.word === word; });
+    selectedNode.classed("selected", true);
 
+    displayResults(selectedNode.data()[0]) 
   }
 
   // Update chart elelments
@@ -169,7 +234,6 @@ function ready(error, words, products) {
       .attr("font-size", 8)
 
     var bbox = g.node().getBBox();
-    console.log(bbox);
     var height = bbox.height;
     g.attr("transform", function(d) {
       return "translate(0," + ((height / 2) - fontSize/10) + ")"
@@ -207,22 +271,46 @@ function ready(error, words, products) {
     }
   });
 
-  function processWord(word) {
-    allSentences = [];
-    products.forEach(function(product, i) {
-      console.log(i);
-      sentences = product["full text"].split(".")
-      
-      sentences.forEach(function(sentence) {
-        if (sentence.toLowerCase().includes(word)) {
-          allSentences.push(sentence);
-          console.log(sentence);
-        }
-      })
-    })
+  function displayResults(data) {
 
-    console.log(allSentences.length)
+    var nResults = data.results.length; 
+
+    $("#results-header").html('<h2>The word ' + 
+                       '<span class="header-highlight">' + data.word + '</span>' + 
+                       ' was found ' + numberWithCommas(data.count) + ' time' + (data.count != 1 ? 's': '') + 
+                       ' in ISW ' + numberWithCommas(nResults) + ' publication' + (nResults != 1 ? 's': '') + '</h2>');
+    $("#results-body").html('');
+
+    data.results.slice(0,100).forEach(function(result, i){
+      var product = products.filter(d => d._id == result.ref)[0]
+      var textBody = product['full text'];
+      var date = product.date.split('T')[0]
+
+      var resultEl = $("<div class='result'>" + 
+                     "<p><a href='" + product.url + "' target='_blank'><strong>" + product.title + '</strong></a>' + (date != '' ? '<small> | ' + date + '</small>': '') + '</p>' + 
+                     '<p><small>More Keywords: ' + product.keywords.join(', ') + '</small></p>' +
+                     '</div>')
+      $("#results-body").append(resultEl);
+
+      var positions = result.matchData.metadata[data.word][searchField].position;
+      positions.forEach(function(position){
+        var buffer = 50;
+        var start = Math.max(position[0] - buffer, 0);
+        var end = start + (buffer * 2) + position[1];
+        var words = textBody.slice(start, end).split(' ').slice(1,-1);
+        words.forEach(function(d,i){
+          if (d.toLowerCase() == data.word) {
+            words[i] = '<span class="quote-highlight">' + d + '</span>';
+          }
+        })
+
+        var split = '...' + words.join(' ') + '...';
+        resultEl.append("<p>" + split + "</p>");
+      })
+
+      resultEl.append('<hr>');
+    })
   }
 
 
-};
+});

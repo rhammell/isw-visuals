@@ -118,50 +118,6 @@ with open('timeline.json', 'w') as f:
     json.dump(nodes, f, indent=4)
 
 
-# Initialize vocab dictionary
-words = {}
-keywords = []
-
-# Define punctuation to remove
-punctuation = punctuation = '!"#$%&()*+,-.:;<=>?@[\\]^_`{|}~'
-replacements = {char: None for char in punctuation}
-
-# Loop through each product 
-for product in products: 
-
-    # Create clean words from full text
-    text = product['full text'].encode('ascii', 'ignore').decode()
-    mapping = text.maketrans(replacements)
-    cleaned_words = text.lower().translate(mapping).split()
-
-    # Add words to vocab - filter for URLs that include /
-    for word in cleaned_words:
-        if not '/' in word: 
-            words[word] = words.get(word, 0) + 1
-
-    # Add product keywords to list
-    for keyword in product['keywords']: 
-        keyword = keyword.encode('ascii', 'ignore').decode()
-        if not keyword in keywords and words.get(keyword, 0): 
-            keywords.append(keyword)
-
-# Create list of 50 top keywords
-kw_values = [(keyword, words[keyword]) for keyword in keywords]
-kw_values.sort(key = lambda x: x[1]) 
-kw_values.reverse()
-keywords = [kw[0] for kw in kw_values]
-
-# Defind output
-output = {
-    'words': words,
-    'keywords': keywords
-}
-
-# Save json formatte data as vocab.json
-with open('words.json', 'w') as f:
-    json.dump(output, f, indent=4)
-
-
 
 
 
