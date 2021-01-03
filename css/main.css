@@ -20,6 +20,10 @@ p {
   font-size: smaller;
 }
 
+a { 
+    color: blue;
+}
+
 a:not(:hover) {
     text-decoration: none;
 }
