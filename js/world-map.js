@@ -1,3 +1,9 @@
+// Define grid for ordering result elements
+var $grid = $('#results-body').masonry({
+              itemSelector: '.result',
+              columnWidth: 480
+            });
+
 // SVG size params
 var width = 960;
 var height = 500;
@@ -115,21 +121,38 @@ function ready(error, countries, products) {
       return product.countries['all mentioned countries'].indexOf(d.properties.name) > -1
     })
 
-    // 
-    $("#results").html('<h2>' + 
-                       d.properties.name + ': ' + 
-                       d.properties.publications + ' ISW article' + (d.properties.publications != 1 ? 's': '') + 
-                       '</h2>')
+    // Order products by date
+    filteredProducts.sort((a, b) => b.date.localeCompare(a.date));
+    console.log('filtered products')
 
-    filteredProducts.forEach(function(product){
-      $("#results").append("<div class='result'>" + 
-                           "<p><a href='" + product.url + "' target='_blank'>" + product.title + '</a></p>' + 
-                           '<p><strong>Publication Date</strong>: ' + product.date.split('T')[0] + '</p>' +
-                           '<p><strong>Countries Mentioned</strong>: ' + product.countries['all mentioned countries'].join(', ') + '</p>' +
-                           '<p><strong>People:</strong> ' + product.people.join(', ') + '</p>' +
-                           '<p><strong>Keywords:</strong> ' + product.keywords.join(', ') + '</p>' +
-                           '<hr>' + 
-                           '</div>')
+    var nResults = filteredProducts.length;
+
+    // Results header
+    $("#results-header").html('<h2>' + 
+        '<b>' + d.properties.name + ':</b> ' + 
+        d.properties.publications + ' ISW publication' + (d.properties.publications != 1 ? 's': '') + 
+        '</h2>' + 
+        '<p>' + (nResults > 100 ? 'Showing first 100 publicaitons only' : '') + '</p>')
+
+    // Clear out results body grid
+    $grid.masonry('remove', $grid.find('.result'));  
+
+    // Add result elements
+    filteredProducts.slice(0,100).forEach(function(product){
+      resultEl =  $('<div class="result">' + 
+         '<h3 class="result-title"><a href="' + product.url + '" target="_blank">' + product.title + '</a>' + '</h3>' + 
+         (product.date != '' ? '<p class="result-date">' + product.date.split('T')[0] + '</p>': '') + 
+         '<p><strong>Countries</strong>: ' + product.countries['all mentioned countries'].join(', ') + '</p>' +
+         '<p><strong>People:</strong> ' + product.people.join(', ') + '</p>' +
+         '<p><strong>Keywords:</strong> ' + product.keywords.join(', ') + '</p>' +
+         '<hr>' + 
+         '</div>')
+
+      $grid.append(resultEl).masonry('appended', resultEl);
     })
+
+    // Layout grid with updated elements
+    $grid.masonry();
+
   }
 }

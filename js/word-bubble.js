@@ -1,3 +1,4 @@
+// Define grid for ordering result elements
 var $grid = $('#results-body').masonry({
               itemSelector: '.result',
               columnWidth: 480
@@ -352,8 +353,8 @@ d3.json('data/isw_products.json', function(products) {
       $grid.append(resultEl).masonry('appended', resultEl);
     })
 
-    // Move results into masonry style positions
-    $grid.masonry()  
+    // Layout grid with updated elements
+    $grid.masonry();
   }
 
   // Text input Enter button callback

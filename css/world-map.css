@@ -51,3 +51,39 @@
   margin-bottom: 20px;
   margin-top: 20px;
 }
+
+#results-header {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+#results-header h2 {
+  font-weight: lighter;
+  margin: 0px;
+}
+
+.result {
+  width: 460px;
+  overflow: hidden;
+}
+
+.result-title {
+  margin: 0px;
+  font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 2px;
+}
+
+.result p {
+  margin: 0px;
+  margin-bottom: 8px;
+}
+
+.result hr {
+  margin-bottom: 20px;
+  margin-top: 20px;
+  height: 1px;
+  background-color: #ccc;
+  border: none;
+}
