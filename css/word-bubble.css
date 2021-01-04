@@ -64,6 +64,22 @@ text {
   margin-bottom: 8px;
 }
 
+.result .result-quote {
+  font-size: 13px;
+  border-left: 0px solid #eaeaea;
+  padding-left: 0px;
+}
+
+.result .result-spacer {
+  margin-bottom: 9px;
+  text-align: center;
+  color: #ddd;
+  font-size: 25px;
+  line-height: 18px;
+  height: 18px;
+  margin-top: -12px;
+}
+
 .result hr {
   margin-bottom: 20px;
   margin-top: 20px;
@@ -79,22 +95,9 @@ text {
 
 .quote-highlight {
   padding: 1px 3px;
-  background-color: #d6dfe6;
+  background-color: #e9edf1;
   border-radius: 2px;
 }
 
-.result-quote {
-  font-size: 14px;
-  border-left: 0px solid #eaeaea;
-  padding-left: 0px;
-}
 
-.result .result-spacer {
-  margin: 0px;
-  margin-bottom: -31px;
-  text-align: center;
-  color: #ddd;
-  font-size: 52px;
-  line-height: 52px;
-}
 
