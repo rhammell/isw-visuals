@@ -336,10 +336,10 @@ d3.json('data/isw_products.json', function(products) {
         var search_regexp = new RegExp("\\b" + data.word + "\\b", "gi");
         sentence = sentence.replace(search_regexp, str => '<span class="quote-highlight">'+ str +'</span>');
 
-        
-
+        // Add quote element
         resultEl.append('<p class="result-quote">"' + sentence + '"</p>');
 
+        // Add quote spacer
         if (i < sentences.length -1) {
           resultEl.append('<p class="result-spacer">...</p>');
         }
