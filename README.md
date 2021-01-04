@@ -4,15 +4,15 @@ This repository contains web-based visualizations to view, explore, and gain ins
 The dataset was created from a web scraping of Institute for the Study of War. It includes metadata about each scraped publication along with its full text and extracted keywords, places, and people names.
 
 ## Visualizations
-- **Co-Occurrence Matrix**: View how often two people are mentioned in the same publication. 
+- **Co-Occurrence Matrix**: View how often two people are mentioned in the same ISW publication. 
   [Demo](https://rhammell.github.io/isw-visuals/co-occurrence.html)
-- **Force-directed Network**: View a network of the most mentioned people, where links are defined by mentions in the same publication. 
+- **Force-directed Network**: View a network of the most mentioned people, where links are defined by mentions in the same ISW publication. 
   [Demo](https://rhammell.github.io/isw-visuals/force-directed.html)
-- **World Map**: View a map of the world that highlights how many publications mentioned each country. 
+- **World Map**: View a map of the world that highlights how many ISW publications mentioned each country. 
   [Demo](https://rhammell.github.io/isw-visuals/world-map.html)
-- **Timeline**: View how often a person was mentioned in publications on a monthly basis. 
+- **Timeline**: View how often a person was mentioned in ISW publications on a monthly basis. 
   [Demo](https://rhammell.github.io/isw-visuals/timeline.html)
-- **Word Bubble**: View how frequently individual words appear in the publications. 
+- **Word Bubble**: View how frequently individual words appear in ISW publications. 
   [Demo](https://rhammell.github.io/isw-visuals/word-bubble.html)
 
 ## Formatting ISW Data
