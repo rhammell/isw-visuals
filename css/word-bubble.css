@@ -67,6 +67,9 @@ text {
 .result hr {
   margin-bottom: 20px;
   margin-top: 20px;
+  height: 1px;
+  background-color: #ccc;
+  border: none;
 }
 
 .header-highlight {
