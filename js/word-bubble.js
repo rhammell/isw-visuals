@@ -33,7 +33,7 @@ function findSentence(text, position) {
 
   sentenceEndPos = Math.min(text.indexOf('. ', position[0]), text.length);
 
-  return text.slice(sentenceStartPos, sentenceEndPos) + '.'
+  return text.slice(sentenceStartPos, sentenceEndPos).trim() + '.'
 }
 
 function buildIndex(docs) {
@@ -195,7 +195,10 @@ d3.json('data/isw_products.json', function(products) {
 
     var selectedNode = nodeGroup.selectAll('.node')
                          .filter(function(d) { return d.word === word; });
-    selectedNode.classed('selected', true);
+    
+    selectedNode
+      .classed('selected', true)
+      .on("end", function(){ console.log('done')});
 
     displayResults(selectedNode.data()[0]) 
   }
@@ -289,15 +292,23 @@ d3.json('data/isw_products.json', function(products) {
     $('#results-header').html('<h2>The word ' + 
                               '<span class="header-highlight">' + data.word + '</span>' + 
                               ' appears ' + numberWithCommas(data.count) + ' time' + (data.count != 1 ? 's': '') + 
-                              ' in ' + numberWithCommas(nResults) + ' ISW publication' + (nResults != 1 ? 's': '') + '</h2>');
+                              ' in ' + numberWithCommas(nResults) + ' ISW publication' + (nResults != 1 ? 's': '') + '</h2>' + 
+                              '<p>' + (nResults > 100 ? 'Showing first 100 publicaitons only' : '') + '</p>');
+
     
     // Clear out results body grid
     $grid.masonry('remove', $grid.find('.result'));  
 
+    // Sort results by publication dates
+    data.results.forEach(function(result){
+      result.date = products.filter(d => d[searchId] == result.ref)[0].date;
+    })
+    data.results.sort((a, b) => b.date.localeCompare(a.date));
+
     // Loop through results
     data.results.slice(0,100).forEach(function(result, i){
-      var product = products.filter(d => d._id == result.ref)[0]
-      var textBody = product['full text'];
+      var product = products.filter(d => d[searchId] == result.ref)[0]
+      var textBody = product[searchField];
       var date = product.date.split('T')[0]
       var keywordLinks = product.keywords.map(
         word => '<a href="#" class="keyword">' + word + '</a>'
@@ -305,8 +316,9 @@ d3.json('data/isw_products.json', function(products) {
 
       // Create result div
       var resultEl = $('<div class="result">' + 
-                     '<p class="title"><a href="' + product.url + '" target="_blank">' + product.title + '</a>' + (date != '' ? '<small> | ' + date + '</small>': '') + '</p>' + 
-                     '<p><small>Keywords: ' + keywordLinks.join(', ') + '</small></p>' +
+                     '<h3 class="result-title"><a href="' + product.url + '" target="_blank">' + product.title + '</a>' + '</h3>' + 
+                     (date != '' ? '<p class="result-date">' + date + '</p>': '') + 
+                     '<p>Keywords: ' + keywordLinks.join(', ') + '</p>' +
                      '</div>')
 
       // Find word positions within body text and add highlighted excerpts
@@ -318,14 +330,18 @@ d3.json('data/isw_products.json', function(products) {
 
       // Add unique sentences to result
       sentences = Array.from(new Set(sentences));
-      sentences.forEach(function(sentence){
+      sentences.forEach(function(sentence, i){
 
         // Highlight word in sentence
-        var search_regexp = new RegExp(data.word, "gi");
-        //search_regexp.ignoreCase;
-        sentence = sentence.replace(search_regexp,'<span class="quote-highlight">'+data.word+'</span>');
+        var search_regexp = new RegExp("\\b" + data.word + "\\b", "gi");
+        sentence = sentence.replace(search_regexp, str => '<span class="quote-highlight">'+ str +'</span>');
 
-        resultEl.append('<p>' + sentence + '</p>');
+        //if (i < sentences.length -1) {
+        resultEl.append('<p class="result-spacer">“</p>');
+        //}
+
+        resultEl.append('<p class="result-quote">' + sentence + '</p>');
+
       })
 
       resultEl.append('<hr>');

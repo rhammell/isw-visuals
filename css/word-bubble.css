@@ -38,27 +38,30 @@ text {
 
 #results-header {
   text-align: center;
-}
-
-#results-header h2 {
-  font-weight: lighter;
   margin-top: 10px;
   margin-bottom: 30px;
 }
 
+#results-header h2 {
+  font-weight: lighter;
+  margin: 0px;
+}
+
 .result {
   width: 460px;
+  overflow: hidden;
+}
+
+.result-title {
+  margin: 0px;
+  font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 2px;
 }
 
 .result p {
-  overflow: hidden;
-  font-size: 14px;
   margin: 0px;
   margin-bottom: 8px;
-}
-
-.result .title {
-  font-size: 16px;
 }
 
 .result hr {
@@ -72,14 +75,23 @@ text {
 }
 
 .quote-highlight {
-  padding: 2px 3px;
-  background-color: #e6f1fb;
-  border-radius: 5px;
+  padding: 1px 3px;
+  background-color: #d6dfe6;
+  border-radius: 2px;
 }
 
+.result-quote {
+  font-size: 14px;
+  border-left: 0px solid #eaeaea;
+  padding-left: 0px;
+}
 
-.grid-item { width: 200px; }
-
-
-
+.result .result-spacer {
+  margin: 0px;
+  margin-bottom: -31px;
+  text-align: center;
+  color: #ddd;
+  font-size: 52px;
+  line-height: 52px;
+}
 
