@@ -5,19 +5,19 @@ The dataset was created from a web scraping of Institute for the Study of War. I
 
 ## Visualizations
 - **Co-Occurrence Matrix**: View how often two people are mentioned in the same ISW publication.
-[Live Demo](https://rhammell.github.io/isw-visuals/co-occurrence.html)
+  [Live Demo](https://rhammell.github.io/isw-visuals/co-occurrence.html)
 
 - **Force-directed Network**: View a network of the top mentioned people, where links are defined by mentions in the same ISW publication. Better understand the key people that publications report on.
-[Live Demo](https://rhammell.github.io/isw-visuals/force-directed.html)
+  [Live Demo](https://rhammell.github.io/isw-visuals/force-directed.html)
 
 - **World Map**: View a map of the world that highlights how many ISW publications mention each country. Learn where the majority publications report on.
-[Live Demo](https://rhammell.github.io/isw-visuals/world-map.html)
+  [Live Demo](https://rhammell.github.io/isw-visuals/world-map.html)
 
 - **Timeline**: View how often a person was mentioned in ISW publications on a monthly basis. Track trends of increasing or dereasing reporting on a person.
-[Live Demo](https://rhammell.github.io/isw-visuals/timeline.html)
+  [Live Demo](https://rhammell.github.io/isw-visuals/timeline.html)
 
 - **Word Bubble**: View how frequently individual words appear in ISW publications. See prominent terms used throughout publications.  
-[Live Demo](https://rhammell.github.io/isw-visuals/word-bubble.html)
+  [Live Demo](https://rhammell.github.io/isw-visuals/word-bubble.html)
 
 ## Formatting ISW Data
 A copy of the ISW Web Scrape and NLP Enrichment dataset is located in the `data` directory. Some visualizations utilize this dataset directly, while others rely on newly formatted datasets derived from it.
