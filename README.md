@@ -1,9 +1,7 @@
 # isw-visuals
 This repository contains web-based visualizations to view, explore, and gain insights into the [ISW Web Scrape and NLP Enrichment](https://www.kaggle.com/connerbrew2/isw-web-scrape-and-nlp-enrichment) dataset. 
 
-The ISW dataset contains publications from the Insitude of the Study of War, including their metadata, full text, and extracted keywords, places, and people names. 
-
-Visualizations were created using various fields from this dataset to present publication information in an accessible, interactive way.
+The ISW dataset contains publications from the Insitude of the Study of War, including their metadata, full text, and extracted keywords, places, and people names. Visualizations were created using various fields from this dataset to present publication information in an accessible, interactive way.
 
 ## Visualizations
 - **Co-Occurrence Matrix**: View how often two people are mentioned in the same ISW publication. See which people are often associated with each other in reporting. [Live Demo](https://rhammell.github.io/isw-visuals/co-occurrence.html)
